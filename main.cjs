@@ -15,7 +15,7 @@ const port = 5500;
 const allowedOrigins = ["http://localhost:3000", "http://localhost:80", "http://localhost:8080"];
 
 // gRPC Proto & Client Setup
-const PROTO_PATH = 'src/proto/StorageCommon.proto';
+const PROTO_PATH = 'proto/StorageCommon.proto';
 const TRANSFER_API_PROTO_PATH = 'src/proto/api/stub/src/main/proto/MFTTransferApi.proto';
 
 const packageDefinition = loadSync(PROTO_PATH, { /* ... options ... */ });
