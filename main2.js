@@ -6,7 +6,7 @@ import lodash from 'lodash';
 
 const app = express();
 const port = 5500;
-
+//This is for viewing the list of storages
 const PROTO_PATH = 'proto/StorageCommon.proto';
 const packageDefinition = loadSync(PROTO_PATH, {
     keepCase: true,
@@ -19,6 +19,21 @@ const packageDefinition = loadSync(PROTO_PATH, {
 const proto = loadPackageDefinition(packageDefinition);
 const Service = lodash.get(proto, 'org.apache.airavata.mft.resource.stubs.storage.common.StorageCommonService');
 const serviceClient = new Service('localhost:7003', ChannelCredentials.createInsecure());
+
+
+var TRANSFER_API_PROTO_PATH = 'proto/api/stub/src/main/proto/MFTTransferApi.proto';
+const transferApiPackageDefinition = loadSync(TRANSFER_API_PROTO_PATH, {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    arrays: true,
+    defaults: true,
+    oneofs: true,
+});
+
+var transferApiProto = loadPackageDefinition(transferApiPackageDefinition)
+const TransferService = lodash.get(transferApiProto, "org.apache.airavata.mft.api.service.MFTTransferService");
+const TransferServiceClient = new TransferService("localhost:7003", ChannelCredentials.createInsecure());
 
 // Define allowed origins
 const allowedOrigins = ["http://localhost:3000"];
@@ -59,8 +74,13 @@ app.get('/list-storages/:storageId', (req, res) => {
     const storageType = req.headers.storagetype;
     const path = req.headers.path;
 
+    console.log('Storage ID:', storageId);
+    console.log('Storage Type:', storageType);
+    console.log('Path:', path);
+
     if (storageType === "LOCAL") {
         // Assuming TransferServiceClient is properly defined
+        console.log('FLAG');
         TransferServiceClient.resourceMetadata({"idRequest" :{
             "resourcePath": path,
             "storageId": storageId,

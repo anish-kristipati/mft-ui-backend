@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const cors = require('cors');
 const { loadSync, loadPackageDefinition, get } = require('@grpc/proto-loader');
 const { ChannelCredentials } = require('@grpc/grpc-js');
